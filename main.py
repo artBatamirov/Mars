@@ -20,6 +20,13 @@ def show_list(style):
            'метеоролог', 'оператор марсохода', 'киберинженер', 'штурман', 'пилот дронов']
     return render_template('list.html', style=style, lst=lst)
 
+@app.route('/answer')
+@app.route('/auto_answer')
+def give_answer():
+    anketa = {'title': 'Анкета', 'surname': 'Watny', 'name': 'Mark', 'education': 'выше среднего',
+              'profession': 'штурман марсохода', 'sex': 'male', 'motivation': 'Всегда мечтал застрять на Марсе!',
+              'ready': 'True'}
+    return render_template('auto_answer.html', anketa=anketa, title=anketa['title'])
 
 if __name__ == '__main__':
     app.run(port=8080, host='127.0.0.1')

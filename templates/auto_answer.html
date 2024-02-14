@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href={{url_for('static', filename='css/style.css')}} />
+    <h4>Фамилия: {{ anketa['surname'] }}</h4>
+    <h4>Имя: {{ anketa['name']  }}</h4>
+    <h4>Образование: {{ anketa['education']  }}</h4>
+    <h4>Профессия: {{ anketa['profession']  }}</h4>
+    <h4>Пол: {{ anketa['sex'] }}</h4>
+    <h4>Мотивация: {{ anketa['motivation']  }}</h4>
+    <h4>Готовы остаться на Марсе? {{ anketa['ready'] }}</h4>
+{% endblock %}
