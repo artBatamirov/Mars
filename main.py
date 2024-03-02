@@ -17,7 +17,7 @@ app.config['PERMANENT_SESSION_LIFETIME'] = datetime.timedelta(
 )
 login_manager = LoginManager()
 login_manager.init_app(app)
-# db_session.global_init('mars_explorer.db')
+db_session.global_init('mars_explorer.db')
 # usr = User()
 # usr.surname = 'a'
 # usr.name = "b"
@@ -51,7 +51,10 @@ def login():
 
     if form.validate_on_submit():
         db_sess = db_session.create_session()
+        for i in db_sess.query(User):
+            print(i.email, i.hashed_password)
         user = db_sess.query(User).filter(User.email == form.email.data).first()
+        print(form.email.data, user)
         if user:
             login_user(user, remember=form.remember_me.data)
             return redirect("/")
