@@ -1,9 +1,10 @@
-from flask import Flask, redirect, render_template, request
-from data import db_session
+from flask import Flask, redirect, render_template, request, jsonify
+from data import db_session, job_api
 from data.users import User
 from flask_login import *
 from  flask_wtf import FlaskForm
 from wtforms import *
+from flask import make_response
 from wtforms.validators import DataRequired
 from data.jobs import Jobs
 import datetime
@@ -17,19 +18,8 @@ app.config['PERMANENT_SESSION_LIFETIME'] = datetime.timedelta(
 )
 login_manager = LoginManager()
 login_manager.init_app(app)
-db_session.global_init('mars_explorer.db')
-# usr = User()
-# usr.surname = 'a'
-# usr.name = "b"
-# usr.age = 21
-# usr.position = 'bb'
-# usr.speciality = 'b engineer'
-# usr.address = 'module_7'
-# usr.email = "pika9969065@gmail.com"
-# # usr.hashed_password = '1111'
-# db_sess = db_session.create_session()
-# db_sess.add(usr)
-# db_sess.commit()
+db_session.global_init('db/mars_explorer.db')
+
 @app.route('/')
 def base_web():
     return render_template('base.html')
@@ -68,6 +58,15 @@ def login():
 def logout():
     logout_user()
     return redirect("/")
+
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error': 'Not found'}), 404)
+
+
+@app.errorhandler(400)
+def bad_request(_):
+    return make_response(jsonify({'error': 'Bad Request'}), 400)
 
 def main():
     pass
@@ -122,4 +121,9 @@ def main():
 
 
 if __name__ == '__main__':
+    app.register_blueprint(job_api.blueprint)
+    # db_sess = db_session.create_session()
+    # jobs = db_sess.query(Jobs).all()
+    # for i in jobs:
+    #     print(i.to_dict())
     app.run()
